@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Your Personalized Advice - Kairova</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="text-center mb-4">
+            <h2>Your Personalized Mental Health Advice</h2>
+            <p class="text-muted">Here are some recommendations based on your responses</p>
+        </div>
+        
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">📝 Your Assessment Results</h4>
+            <p>Thank you for sharing how you're feeling. Here are some personalized suggestions to help support your mental well-being.</p>
+            <hr>
+            <p class="mb-0">Remember, these are just suggestions. If you're struggling, please consider reaching out to a mental health professional.</p>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">📋 Your Personalized Advice</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li th:each="item : ${advice}" class="list-group-item border-0" th:text="${item}"></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">💡 Additional Resources</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="https://www.nimh.nih.gov/health/find-help" target="_blank" class="text-decoration-none">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>National Institute of Mental Health - Find Help
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="https://www.mentalhealth.gov/get-help" target="_blank" class="text-decoration-none">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>MentalHealth.gov - Get Help
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.crisistextline.org/" target="_blank" class="text-decoration-none">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>Crisis Text Line - Text HOME to 741741
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="d-grid gap-2">
+            <a href="/" class="btn btn-outline-primary">Take Another Assessment</a>
+        </div>
+    </div>
+</body>
+</html>
