@@ -1,23 +1,81 @@
 package com.kairova.simple.controller;
 
 import com.kairova.simple.model.MentalHealthAssessment;
+import com.kairova.simple.model.CareerAdvice;
+import com.kairova.simple.model.CollaborationRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
+    
+    // Mock data for career guidance
+    private final Map<String, CareerAdvice> careerAdviceMap = new HashMap<>();
+    
+    // Store collaboration requests (in a real app, this would be a database)
+    private final List<CollaborationRequest> collaborationRequests = new ArrayList<>();
+    
+    public HomeController() {
+        // Initialize some sample career advice
+        initializeCareerAdvice();
+    }
+    
+    private void initializeCareerAdvice() {
+        // Sample career advice data
+        CareerAdvice programming = new CareerAdvice();
+        programming.setInterest("Programming");
+        programming.setCareerOptions(Arrays.asList("Software Developer", "Web Developer", "Mobile App Developer"));
+        programming.setSkillsNeeded(Arrays.asList("Java", "Python", "JavaScript", "Data Structures"));
+        programming.setResources(Arrays.asList("LeetCode", "HackerRank", "FreeCodeCamp"));
+        
+        CareerAdvice design = new CareerAdvice();
+        design.setInterest("Design");
+        design.setCareerOptions(Arrays.asList("UI/UX Designer", "Graphic Designer", "Product Designer"));
+        design.setSkillsNeeded(Arrays.asList("Figma", "Adobe XD", "User Research", "Prototyping"));
+        design.setResources(Arrays.asList("Behance", "Dribbble", "DesignCourse"));
+        
+        careerAdviceMap.put("programming", programming);
+        careerAdviceMap.put("design", design);
+    }
 
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("assessment", new MentalHealthAssessment());
+        model.addAttribute("collaborationRequest", new CollaborationRequest());
         return "index";
+    }
+    
+    @GetMapping("/career")
+    public String careerGuidance(Model model) {
+        model.addAttribute("interests", careerAdviceMap.keySet());
+        model.addAttribute("careerAdvice", new CareerAdvice());
+        return "career";
+    }
+    
+    @PostMapping("/career/advice")
+    public String getCareerAdvice(@RequestParam String interest, Model model) {
+        CareerAdvice advice = careerAdviceMap.get(interest.toLowerCase());
+        model.addAttribute("careerAdvice", advice != null ? advice : new CareerAdvice());
+        model.addAttribute("interests", careerAdviceMap.keySet());
+        return "career";
+    }
+    
+    @PostMapping("/collaborate")
+    public String submitCollaboration(@ModelAttribute CollaborationRequest request, Model model) {
+        collaborationRequests.add(request);
+        model.addAttribute("collaborationRequest", new CollaborationRequest());
+        model.addAttribute("successMessage", "Your collaboration request has been submitted successfully!");
+        return "index";
+    }
+    
+    @GetMapping("/collaborations")
+    public String viewCollaborations(Model model) {
+        model.addAttribute("collaborations", collaborationRequests);
+        return "collaborations";
     }
 
     @PostMapping("/assess")

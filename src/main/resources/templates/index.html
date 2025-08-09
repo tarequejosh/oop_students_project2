@@ -1,50 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairova - Mental Health Assessment</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Kairova - Student Support Portal</title>
     <style>
-        :root {
-            --primary-color: #4e73df;
-            --secondary-color: #1cc88a;
-            --dark-color: #5a5c69;
-            --light-color: #f8f9fc;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fb;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-            margin-bottom: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
-        }
-        
-        .card-header {
-            background-color: var(--primary-color);
+        .hero-section {
+            background: linear-gradient(135deg, #6f42c1 0%, #4e31aa 100%);
             color: white;
-            font-weight: 600;
-            border-top-left-radius: 15px !important;
-            border-top-right-radius: 15px !important;
-            padding: 1.25rem 1.5rem;
+            padding: 4rem 0;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="rgba(255,255,255,0.05)" /></svg>');
+            opacity: 0.5;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #6f42c1;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-feature {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: #6f42c1;
             border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #5a32a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.25);
+        }
+        
+        .btn-outline-primary {
+            color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
         }
         
         .card-body {
@@ -147,11 +175,76 @@
         }
     </style>
 </head>
-<body>
+<div layout:fragment="content">
+    <!-- Hero Section -->
+    <section class="hero-section text-center mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-4">Welcome to Kairova</h1>
+                    <p class="lead mb-4">Your one-stop platform for academic success, career guidance, and mental well-being</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="/career" class="btn btn-light btn-lg btn-feature">
+                            <i class="bi bi-briefcase me-2"></i>Explore Careers
+                        </a>
+                        <a href="/collaborations" class="btn btn-outline-light btn-lg btn-feature">
+                            <i class="bi bi-people me-2"></i>Find Collaborators
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
     <div class="container">
-        <header class="page-header">
-            <div class="d-flex align-items-center justify-content-center mb-3">
-                <i class="bi bi-heart-pulse-fill text-primary me-3" style="font-size: 2.5rem;"></i>
+        <div class="row g-4 mb-5">
+            <!-- Career Guidance Card -->
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+                        <h3>Career Guidance</h3>
+                        <p>Discover career paths that match your interests and skills. Get personalized advice and resources to help you achieve your professional goals.</p>
+                        <a href="/career" class="btn btn-primary btn-feature">Explore Careers</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Academic Collaboration Card -->
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h3>Academic Collaboration</h3>
+                        <p>Connect with seniors and peers for group projects, study sessions, and knowledge sharing. Build your academic network and learn from others.</p>
+                        <a href="/collaborations" class="btn btn-primary btn-feature">Find Collaborators</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mental Health Assessment Card -->
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+                        <h3>Mental Well-being</h3>
+                        <p>Take care of your mental health with our assessment tools and personalized advice. Your well-being is just as important as your academic success.</p>
+                        <a href="#mental-health" class="btn btn-primary btn-feature" data-bs-toggle="collapse">Assess Well-being</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mental Health Assessment Section -->
+        <div id="mental-health" class="collapse">
+            <div class="card mb-5">
                 <h1 class="m-0">Kairova</h1>
             </div>
             <h2 class="h4 text-muted fw-normal">Mental Health Assessment</h2>
@@ -241,11 +334,12 @@
         </div>
     </div>
     
-    <footer class="footer">
-        <div class="container">
-            <p class="mb-0">© 2025 Kairova Mental Health. All rights reserved.</p>
-            <p class="small text-muted mt-2">This tool is not a substitute for professional medical advice, diagnosis, or treatment.</p>
-        </div>
+        </div> <!-- End of container -->
+    
+    <footer class="footer mt-5 py-4 bg-light">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Kairova Student Support Portal. All rights reserved.</p>
+            <p class="small text-muted mt-2">This tool is not a substitute for professional advice. Always consult with qualified professionals for career, academic, or health-related matters.</p>
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

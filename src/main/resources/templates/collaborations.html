@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Academic Collaboration</title>
+    <style>
+        .collaboration-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .collaboration-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .collaboration-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collaboration-body {
+            padding: 1.5rem;
+        }
+        .collaboration-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .no-collaborations {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+        .contact-badge {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content" class="collaboration-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Academic Collaboration Board</h1>
+            <a href="/" class="btn btn-outline-primary">Back to Home</a>
+        </div>
+        
+        <p class="lead">Connect with seniors and peers for academic collaboration.</p>
+        
+        <div th:if="${collaborations != null && !collaborations.empty}">
+            <div th:each="collab : ${collaborations}" class="collaboration-card">
+                <div class="collaboration-header">
+                    <h5 class="mb-0" th:text="${collab.subject}"></h5>
+                    <span class="text-muted" th:text="'Year ' + ${collab.academicYear}"></span>
+                </div>
+                <div class="collaboration-body">
+                    <div class="collaboration-meta">
+                        <span th:text="'Posted by: ' + ${collab.name}"></span>
+                        <span class="mx-2">•</span>
+                        <span th:text="'Contact: ' + ${collab.email}"></span>
+                    </div>
+                    <p class="mb-3" th:text="${collab.message}"></p>
+                    <div>
+                        <span class="contact-badge" th:text="'Preferred contact: ' + ${collab.preferredContactMethod}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${collaborations == null || collaborations.empty}" class="no-collaborations">
+            <i class="fas fa-comments fa-3x mb-3" style="color: #e9ecef;"></i>
+            <h4>No collaboration requests yet</h4>
+            <p>Be the first to start a collaboration!</p>
+            <a href="/" class="btn btn-primary mt-2">Submit Request</a>
+        </div>
+    </div>
+</body>
+</html>
