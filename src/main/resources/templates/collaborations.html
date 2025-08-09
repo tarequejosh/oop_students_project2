@@ -4,6 +4,7 @@
       layout:decorate="~{layout}">
 <head>
     <title>Academic Collaboration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .collaboration-container {
             max-width: 1000px;
@@ -47,16 +48,54 @@
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
         }
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-completed {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        .search-box {
+            max-width: 400px;
+            margin-bottom: 1.5rem;
+        }
+        .collaboration-card {
+            transition: transform 0.2s;
+        }
+        .collaboration-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
 <body>
     <div layout:fragment="content" class="collaboration-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Academic Collaboration Board</h1>
-            <a href="/" class="btn btn-outline-primary">Back to Home</a>
+            <h1><i class="fas fa-users me-2"></i>Academic Collaboration Board</h1>
+            <a href="/" class="btn btn-outline-primary"><i class="fas fa-home me-1"></i> Back to Home</a>
         </div>
         
         <p class="lead">Connect with seniors and peers for academic collaboration.</p>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="search-box">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search collaborations..." 
+                           onkeyup="filterCollaborations()">
+                </div>
+            </div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollabModal">
+                <i class="fas fa-plus me-1"></i> New Collaboration
+            </button>
+        </div>
         
         <div th:if="${collaborations != null && !collaborations.empty}">
             <div th:each="collab : ${collaborations}" class="collaboration-card">
@@ -71,8 +110,16 @@
                         <span th:text="'Contact: ' + ${collab.email}"></span>
                     </div>
                     <p class="mb-3" th:text="${collab.message}"></p>
-                    <div>
-                        <span class="contact-badge" th:text="'Preferred contact: ' + ${collab.preferredContactMethod}"></span>
+                    <div class="d-flex flex-wrap align-items-center">
+                        <span class="contact-badge" th:text="'Contact: ' + ${collab.preferredContactMethod}"></span>
+                        <span th:class="${collab.status == 'Active' ? 'status-badge status-active' : 'status-badge status-completed'}" 
+                              th:text="${collab.status}"></span>
+                        <button class="btn btn-sm btn-outline-secondary ms-auto" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#contactModal"
+                                th:attr="data-email=${collab.email}, data-name=${collab.name}">
+                            <i class="fas fa-envelope me-1"></i> Contact
+                        </button>
                     </div>
                 </div>
             </div>
@@ -84,6 +131,109 @@
             <p>Be the first to start a collaboration!</p>
             <a href="/" class="btn btn-primary mt-2">Submit Request</a>
         </div>
+        
+        <!-- DIU Alumni Section -->
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                        <i class="fab fa-facebook fa-4x text-primary"></i>
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="card-title">DIU Alumni Network</h3>
+                        <p class="card-text">Connect with DIU alumni from around the world. Join our official Facebook group to network, find job opportunities, and stay updated with alumni events.</p>
+                        <a href="https://www.facebook.com/diualumni" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-facebook-f me-2"></i> Join DIU Alumni on Facebook
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Send Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="contactForm">
+                        <input type="hidden" id="recipientEmail">
+                        <div class="mb-3">
+                            <label for="messageText" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="messageText" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="yourEmail" class="form-label">Your Email</label>
+                            <input type="email" class="form-control" id="yourEmail" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="sendMessage()">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        function filterCollaborations() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('.collaboration-card');
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Contact modal setup
+        const contactModal = document.getElementById('contactModal');
+        if (contactModal) {
+            contactModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const recipientName = button.getAttribute('data-name');
+                const recipientEmail = button.getAttribute('data-email');
+                
+                const modalTitle = contactModal.querySelector('.modal-title');
+                const emailInput = contactModal.querySelector('#recipientEmail');
+                
+                modalTitle.textContent = `Contact ${recipientName}`;
+                emailInput.value = recipientEmail;
+            });
+        }
+
+        // Send message function
+        function sendMessage() {
+            const email = document.getElementById('recipientEmail').value;
+            const message = document.getElementById('messageText').value;
+            const yourEmail = document.getElementById('yourEmail').value;
+            
+            // Here you would typically send this data to your server
+            console.log('Sending message to:', email);
+            console.log('From:', yourEmail);
+            console.log('Message:', message);
+            
+            // Show success message
+            alert('Your message has been sent!');
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(contactModal);
+            modal.hide();
+            
+            // Reset form
+            document.getElementById('contactForm').reset();
+        }
+    </script>
 </body>
 </html>

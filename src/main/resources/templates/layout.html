@@ -82,18 +82,28 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/' ? 'active' : ''}" href="/">
+                            <a class="nav-link" th:class="${#httpServletRequest.requestURI == '/' ? 'nav-link active' : 'nav-link'}" href="/">
                                 <i class="bi bi-house-door"></i> Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI.startsWith('/career') ? 'active' : ''}" href="/career">
+                            <a class="nav-link" th:class="${#httpServletRequest.requestURI.startsWith('/career') ? 'nav-link active' : 'nav-link'}" href="/career">
                                 <i class="bi bi-briefcase"></i> Career Guidance
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/collaborations' ? 'active' : ''}" href="/collaborations">
+                            <a class="nav-link" th:class="${#httpServletRequest.requestURI.startsWith('/collaborations') ? 'nav-link active' : 'nav-link'}" href="/collaborations">
                                 <i class="bi bi-people"></i> Academic Collaboration
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:class="${#httpServletRequest.requestURI.startsWith('/financial-aid') ? 'nav-link active' : 'nav-link'}" href="/financial-aid">
+                                <i class="bi bi-wallet2"></i> Financial Aid
+                            </a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-primary rounded-pill px-3" href="/donate" style="color: white !important;">
+                                <i class="bi bi-heart-fill me-1"></i> Donate
                             </a>
                         </li>
                     </ul>
