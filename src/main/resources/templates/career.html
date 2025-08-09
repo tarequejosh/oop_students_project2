@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      layout:decorate="~{layout}" th:with="baseUrl=@{/}">
 <head>
     <title>Career Guidance</title>
     <style>
@@ -44,7 +44,7 @@
         <h1>Career Guidance</h1>
         <p>Select an area of interest to explore career options and required skills.</p>
         
-        <form th:action="@{/career/advice}" method="post" class="mb-4">
+        <form th:action="@{/career/advice}" method="post" class="mb-4" th:if="${interests != null and !interests.isEmpty()}">
             <div class="form-group">
                 <label for="interest">Select Interest:</label>
                 <select id="interest" name="interest" class="form-control" required>
